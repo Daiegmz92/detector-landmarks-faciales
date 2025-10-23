@@ -213,42 +213,52 @@ with st.sidebar:
     """, unsafe_allow_html=True)
 
 if modo == "Imagen subida":
-    # Uploader de imagen
+    # Uploader de imagen con control de errores
     uploaded_file = st.file_uploader(
         "Subí una imagen con un rostro",
         type=["jpg", "jpeg", "png"],
-        help="Formatos aceptados: JPG, JPEG, PNG"
+        help="Formatos aceptados: JPG, JPEG, PNG. Sube una imagen válida para detectar landmarks faciales."
     )
 
     if uploaded_file is not None:
-        # Cargar imagen
-        imagen_original = Image.open(uploaded_file)
+        # Control de errores: manejo de archivos inválidos
+        try:
+            # Cargar imagen
+            imagen_original = Image.open(uploaded_file)
 
-        # Convertir a formato OpenCV
-        pil_to_cv2, cv2_to_pil, resize_image = get_utils()
-        imagen_cv2 = pil_to_cv2(imagen_original)
+            # Convertir a formato OpenCV
+            pil_to_cv2, cv2_to_pil, resize_image = get_utils()
+            imagen_cv2 = pil_to_cv2(imagen_original)
 
-        # Redimensionar si es muy grande
-        imagen_cv2 = resize_image(imagen_cv2, max_width=800)
+            # Redimensionar si es muy grande
+            imagen_cv2 = resize_image(imagen_cv2, max_width=800)
 
-        # Columnas para mostrar antes/después con mejor diseño
-        col1, col2 = st.columns([1, 1], gap="large")
+            # Columnas para mostrar antes/después con mejor diseño
+            col1, col2 = st.columns([1, 1], gap="large")
 
-        with col1:
-            st.markdown("### 📸 Imagen Original")
-            st.image(cv2_to_pil(imagen_cv2), caption="Imagen subida por el usuario")
+            with col1:
+                st.markdown("### 📸 Imagen Original")
+                st.image(cv2_to_pil(imagen_cv2), caption="Imagen subida por el usuario")
 
-        # Detectar landmarks con mejor feedback
-        with st.spinner("🔍 Analizando imagen y detectando landmarks..."):
-            try:
-                detector = get_detector()
-                pil_to_cv2, cv2_to_pil, resize_image = get_utils()
-                TOTAL_LANDMARKS = get_config()
-                imagen_procesada, landmarks, info = detector.detect(imagen_cv2)
-                detector.close()
-            except Exception as e:
-                st.error(f"Error en la detección: {str(e)}")
-                st.stop()
+            # Detectar landmarks con mejor feedback
+            with st.spinner("🔍 Analizando imagen y detectando landmarks..."):
+                try:
+                    detector = get_detector()
+                    pil_to_cv2, cv2_to_pil, resize_image = get_utils()
+                    TOTAL_LANDMARKS = get_config()
+                    imagen_procesada, landmarks, info = detector.detect(imagen_cv2)
+                    detector.close()
+                except Exception as e:
+                    st.error(f"Error en la detección: {str(e)}")
+                    st.stop()
+
+        except Exception as e:
+            # Error genérico: archivo corrupto o inválido
+            st.error(
+                "❌ ¡Ups! Hubo un error al procesar la imagen. " +
+                "Asegúrate de que sea un archivo JPG o PNG válido y vuelve a intentarlo."
+            )
+            st.info("💡 Tip: Si el archivo es muy grande, intenta con una imagen más pequeña.")
 
         with col2:
             st.markdown("### 🎯 Landmarks Detectados")
@@ -260,32 +270,27 @@ if modo == "Imagen subida":
         if info["deteccion_exitosa"]:
             st.success("✅ ¡Detección exitosa! Se encontraron landmarks faciales.")
 
-            # Métricas mejoradas con estilo
+            # Estadísticas mejoradas con contenedores
             st.markdown("### 📊 Estadísticas de Detección")
-            metric_col1, metric_col2, metric_col3 = st.columns(3)
+            col1, col2, col3 = st.columns(3)
 
-            with metric_col1:
-                st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-                st.metric("👥 Rostros detectados", info["rostros_detectados"])
-                st.markdown('</div>', unsafe_allow_html=True)
+            with col1:
+                with st.container(border=True):
+                    st.metric("👥 Rostros detectados", info["rostros_detectados"])
 
-            with metric_col2:
-                st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-                st.metric("🎯 Landmarks detectados", f"{info['total_landmarks']}/{TOTAL_LANDMARKS}")
-                st.markdown('</div>', unsafe_allow_html=True)
+            with col2:
+                with st.container(border=True):
+                    st.metric("🎯 Landmarks detectados", f"{info['total_landmarks']}/{TOTAL_LANDMARKS}")
 
-            with metric_col3:
-                try:
-                    TOTAL_LANDMARKS = get_config()
-                    porcentaje = (info['total_landmarks'] / TOTAL_LANDMARKS) * 100
-                    color = "🟢" if porcentaje > 90 else "🟡" if porcentaje > 70 else "🔴"
-                    st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-                    st.metric(f"{color} Precisión", f"{porcentaje:.1f}%")
-                    st.markdown('</div>', unsafe_allow_html=True)
-                except:
-                    st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-                    st.metric("📊 Estado", "Completado")
-                    st.markdown('</div>', unsafe_allow_html=True)
+            with col3:
+                with st.container(border=True):
+                    try:
+                        TOTAL_LANDMARKS = get_config()
+                        porcentaje = (info['total_landmarks'] / TOTAL_LANDMARKS) * 100
+                        color = "🟢" if porcentaje > 90 else "🟡" if porcentaje > 70 else "🔴"
+                        st.metric(f"{color} Precisión", f"{porcentaje:.1f}%")
+                    except:
+                        st.metric("📊 Estado", "Completado")
         else:
             st.error("No se detectó ningún rostro en la imagen")
             st.info("""
