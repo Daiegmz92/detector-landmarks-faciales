@@ -152,7 +152,7 @@ st.markdown("""
 
 # Título y descripción con estilo
 st.markdown('<h1 class="main-header">🤖 Detector de Landmarks Faciales</h1>', unsafe_allow_html=True)
-st.markdown('<p class="subtitle">Esta aplicación detecta <strong>478 puntos clave</strong> en rostros humanos usando MediaPipe.<br>Subí una imagen con un rostro y mirá la magia de la visión por computadora.</p>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle">Esta aplicación detecta <strong>478 puntos clave</strong> en rostros humanos usando MediaPipe.<br>Subí una imagen con un rostro y mira la magia de la visión por computadora.</p>', unsafe_allow_html=True)
 
 # Selector de modo (simplificado para evitar errores de DOM)
 modo = st.selectbox(
