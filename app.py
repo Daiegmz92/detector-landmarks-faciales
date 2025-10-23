@@ -167,38 +167,36 @@ with st.sidebar:
         st.markdown("## 🧠 Información Técnica")
         st.markdown('<hr class="section-separator">', unsafe_allow_html=True)
 
-    st.markdown("### 🎯 ¿Qué son los Landmarks?")
-    st.markdown("""
-    Son **478 puntos de referencia** que mapean:
-    - 👁️ **Ojos**: iris, párpados, cejas
-    - 👃 **Nariz**: puente, fosas, base
-    - 👄 **Boca**: labios, comisuras, dientes
-    - 😊 **Contorno facial**: mandíbula, pómulos
-    """)
-
-    st.markdown('<hr class="section-separator">', unsafe_allow_html=True)
-
-    st.markdown("### 🚀 Aplicaciones")
-    st.markdown("""
-    - 📸 **Filtros AR**: Instagram, Snapchat
-    - 🎭 **Análisis emocional**: expresiones faciales
-    - 🎬 **Animación**: películas, videojuegos
-    - 🔐 **Biometría**: autenticación facial
-    - 🏥 **Medicina**: análisis anatómico
-    """)
-
-    if modo == "Cámara en tiempo real":
-        st.markdown('<hr class="section-separator">', unsafe_allow_html=True)
-        st.markdown("### 📹 Consejos para la Cámara")
+        st.markdown("### 🎯 ¿Qué son los Landmarks?")
         st.markdown("""
-        ✅ **Iluminación**: buena luz natural
-        🎯 **Posición**: rostro centrado
-        🏃 **Movimiento**: evita sacudidas bruscas
-        👀 **Orientación**: mira de frente a la cámara
-        📏 **Distancia**: 30-50 cm de la lente
+        Son **478 puntos de referencia** que mapean:
+        - 👁️ **Ojos**: iris, párpados, cejas
+        - 👃 **Nariz**: puente, fosas, base
+        - 👄 **Boca**: labios, comisuras, dientes
+        - 😊 **Contorno facial**: mandíbula, pómulos
         """)
 
-        # Cerrar el contenedor
+        st.markdown('<hr class="section-separator">', unsafe_allow_html=True)
+
+        st.markdown("### 🚀 Aplicaciones")
+        st.markdown("""
+        - 📸 **Filtros AR**: Instagram, Snapchat
+        - 🎭 **Análisis emocional**: expresiones faciales
+        - 🎬 **Animación**: películas, videojuegos
+        - 🔐 **Biometría**: autenticación facial
+        - 🏥 **Medicina**: análisis anatómico
+        """)
+
+        if modo == "Cámara en tiempo real":
+            st.markdown('<hr class="section-separator">', unsafe_allow_html=True)
+            st.markdown("### 📹 Consejos para la Cámara")
+            st.markdown("""
+            ✅ **Iluminación**: buena luz natural
+            🎯 **Posición**: rostro centrado
+            🏃 **Movimiento**: evita sacudidas bruscas
+            👀 **Orientación**: mira de frente a la cámara
+            📏 **Distancia**: 30-50 cm de la lente
+            """)
 
     st.divider()
     st.markdown("""
