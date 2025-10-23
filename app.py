@@ -144,11 +144,10 @@ st.markdown("""
 st.markdown('<h1 class="main-header">🤖 Detector de Landmarks Faciales</h1>', unsafe_allow_html=True)
 st.markdown('<p class="subtitle">Esta aplicación detecta <strong>478 puntos clave</strong> en rostros humanos usando MediaPipe.<br>Subí una imagen con un rostro y mirá la magia de la visión por computadora.</p>', unsafe_allow_html=True)
 
-# Selector de modo
-modo = st.radio(
+# Selector de modo (simplificado para evitar errores de DOM)
+modo = st.selectbox(
     "Seleccioná el modo de detección:",
     ["Imagen subida", "Cámara en tiempo real"],
-    horizontal=True,
     help="Elegí entre subir una imagen o usar la cámara en vivo"
 )
 
