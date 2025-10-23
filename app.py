@@ -163,7 +163,7 @@ modo = st.selectbox(
 
 # Sidebar con información mejorada usando expanders
 with st.sidebar:
-    st.title("🧠 Información Técnica")
+    st.title("🧠 Información Técnica", help="Información detallada sobre landmarks faciales y aplicaciones")
 
     # Expander para la Información Técnica
     with st.expander("🎯 ¿Qué son los Landmarks?", expanded=True):
