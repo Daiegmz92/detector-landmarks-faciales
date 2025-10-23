@@ -6,9 +6,19 @@ import streamlit as st
 from PIL import Image
 import cv2
 import numpy as np
-from src.detector import FaceLandmarkDetector
-from src.utils import pil_to_cv2, cv2_to_pil, resize_image
-from src.config import TOTAL_LANDMARKS
+
+# Lazy imports to avoid initialization issues
+def get_detector():
+    from src.detector import FaceLandmarkDetector
+    return FaceLandmarkDetector()
+
+def get_utils():
+    from src.utils import pil_to_cv2, cv2_to_pil, resize_image
+    return pil_to_cv2, cv2_to_pil, resize_image
+
+def get_config():
+    from src.config import TOTAL_LANDMARKS
+    return TOTAL_LANDMARKS
 
 
 # Configuración de la página
@@ -229,9 +239,15 @@ if modo == "Imagen subida":
 
         # Detectar landmarks con mejor feedback
         with st.spinner("🔍 Analizando imagen y detectando landmarks..."):
-            detector = FaceLandmarkDetector()
-            imagen_procesada, landmarks, info = detector.detect(imagen_cv2)
-            detector.close()
+            try:
+                detector = get_detector()
+                pil_to_cv2, cv2_to_pil, resize_image = get_utils()
+                TOTAL_LANDMARKS = get_config()
+                imagen_procesada, landmarks, info = detector.detect(imagen_cv2)
+                detector.close()
+            except Exception as e:
+                st.error(f"Error en la detección: {str(e)}")
+                st.stop()
 
         with col2:
             st.markdown("### 🎯 Landmarks Detectados")
@@ -258,11 +274,17 @@ if modo == "Imagen subida":
                 st.markdown('</div>', unsafe_allow_html=True)
 
             with metric_col3:
-                porcentaje = (info['total_landmarks'] / TOTAL_LANDMARKS) * 100
-                color = "🟢" if porcentaje > 90 else "🟡" if porcentaje > 70 else "🔴"
-                st.markdown('<div class="metric-card">', unsafe_allow_html=True)
-                st.metric(f"{color} Precisión", f"{porcentaje:.1f}%")
-                st.markdown('</div>', unsafe_allow_html=True)
+                try:
+                    TOTAL_LANDMARKS = get_config()
+                    porcentaje = (info['total_landmarks'] / TOTAL_LANDMARKS) * 100
+                    color = "🟢" if porcentaje > 90 else "🟡" if porcentaje > 70 else "🔴"
+                    st.markdown('<div class="metric-card">', unsafe_allow_html=True)
+                    st.metric(f"{color} Precisión", f"{porcentaje:.1f}%")
+                    st.markdown('</div>', unsafe_allow_html=True)
+                except:
+                    st.markdown('<div class="metric-card">', unsafe_allow_html=True)
+                    st.metric("📊 Estado", "Completado")
+                    st.markdown('</div>', unsafe_allow_html=True)
         else:
             st.error("No se detectó ningún rostro en la imagen")
             st.info("""
