@@ -225,6 +225,7 @@ if modo == "Imagen subida":
         imagen_original = Image.open(uploaded_file)
 
         # Convertir a formato OpenCV
+        pil_to_cv2, cv2_to_pil, resize_image = get_utils()
         imagen_cv2 = pil_to_cv2(imagen_original)
 
         # Redimensionar si es muy grande
