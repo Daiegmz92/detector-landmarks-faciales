@@ -327,19 +327,34 @@ elif modo == "Cámara en tiempo real":
     - ✅ Visualización de landmarks en vivo
     """)
 
-    # Información técnica
+    # Información técnica mejorada
     with st.expander("🔧 Detalles Técnicos del Modo Cámara"):
-        st.markdown("""
-        **Tecnología utilizada:**
-        - OpenCV para captura de video
-        - MediaPipe para detección de landmarks
-        - Procesamiento en tiempo real
-        - Optimización para 640x480 resolución
+        col_tech1, col_tech2 = st.columns(2)
 
-        **Limitaciones en la nube:**
-        - Streamlit Cloud no permite acceso directo a hardware
-        - Restricciones de seguridad del navegador
-        - Solo funciona en entornos locales
+        with col_tech1:
+            st.markdown("### 🛠️ Tecnología Utilizada")
+            st.markdown("""
+            - **OpenCV**: Captura y procesamiento de video
+            - **MediaPipe**: Framework de ML de Google
+            - **Streamlit**: Interfaz web en tiempo real
+            - **WebRTC**: Comunicación con cámara web
+            """)
+
+        with col_tech2:
+            st.markdown("### ⚙️ Especificaciones")
+            st.markdown("""
+            - **Resolución**: 640x480 píxeles
+            - **FPS**: 30 frames por segundo
+            - **Landmarks**: 478 puntos faciales
+            - **Procesamiento**: Frame por frame
+            """)
+
+        st.markdown("### 🚫 Limitaciones en Streamlit Cloud")
+        st.markdown("""
+        - ❌ **Acceso a hardware**: No permite cámaras
+        - ❌ **WebRTC**: Bloqueado por seguridad
+        - ❌ **Permisos del navegador**: Restringidos
+        - ✅ **Solución**: Ejecutar localmente
         """)
 
     # Placeholder para evitar errores de DOM
@@ -355,26 +370,30 @@ else:
     </div>
     """, unsafe_allow_html=True)
 
-    # Información técnica
-    col1, col2 = st.columns(2)
+    # Información técnica mejorada
+    st.markdown("### 🔬 Información Técnica")
 
-    with col1:
-        st.markdown("### 🧠 Tecnología")
-        st.markdown("""
-        - **MediaPipe**: Framework de Google para ML
-        - **478 Landmarks**: Puntos faciales de precisión
-        - **Tiempo real**: Procesamiento en vivo
-        - **OpenCV**: Visión por computadora
-        """)
+    col_tech1, col_tech2 = st.columns(2)
 
-    with col2:
-        st.markdown("### 📊 Capacidades")
-        st.markdown("""
-        - **Detección facial**: Rostros múltiples
-        - **Mapeo anatómico**: Detalle médico
-        - **Aplicaciones AR**: Filtros y efectos
-        - **Análisis emocional**: Expresiones
-        """)
+    with col_tech1:
+        with st.container(border=True):
+            st.markdown("### 🧠 Tecnología Principal")
+            st.markdown("""
+            - **MediaPipe**: Framework de ML de Google
+            - **478 Landmarks**: Precisión médica
+            - **OpenCV**: Procesamiento de imágenes
+            - **Streamlit**: Interfaz web moderna
+            """)
+
+    with col_tech2:
+        with st.container(border=True):
+            st.markdown("### 📊 Capacidades del Sistema")
+            st.markdown("""
+            - **Detección múltiple**: Varios rostros
+            - **Mapeo anatómico**: Detalle profesional
+            - **Aplicaciones AR**: Filtros en tiempo real
+            - **Análisis emocional**: Expresiones faciales
+            """)
 
     # Ejemplo visual mejorado
     st.markdown("### 🎨 Ejemplo de Detección")
