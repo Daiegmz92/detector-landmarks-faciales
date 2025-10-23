@@ -163,10 +163,9 @@ modo = st.selectbox(
 
 # Sidebar con información mejorada
 with st.sidebar:
-    st.markdown('<div class="sidebar-content">', unsafe_allow_html=True)
-
-    st.markdown("## 🧠 Información Técnica")
-    st.markdown('<hr class="section-separator">', unsafe_allow_html=True)
+    with st.container(border=True):
+        st.markdown("## 🧠 Información Técnica")
+        st.markdown('<hr class="section-separator">', unsafe_allow_html=True)
 
     st.markdown("### 🎯 ¿Qué son los Landmarks?")
     st.markdown("""
@@ -199,7 +198,7 @@ with st.sidebar:
         📏 **Distancia**: 30-50 cm de la lente
         """)
 
-    st.markdown('</div>', unsafe_allow_html=True)
+        # Cerrar el contenedor
 
     st.divider()
     st.markdown("""
