@@ -161,41 +161,38 @@ modo = st.selectbox(
     help="Elegí entre subir una imagen o usar la cámara en vivo"
 )
 
-# Sidebar con información mejorada
+# Sidebar con información mejorada usando expanders
 with st.sidebar:
-    with st.container(border=True):
-        st.markdown("## 🧠 Información Técnica")
-        st.markdown('<hr class="section-separator">', unsafe_allow_html=True)
+    st.title("🧠 Información Técnica")
 
-        st.markdown("### 🎯 ¿Qué son los Landmarks?")
+    # Expander para la Información Técnica
+    with st.expander("🎯 ¿Qué son los Landmarks?", expanded=True):
+        st.write("Son **478 puntos de referencia** que mapean:")
         st.markdown("""
-        Son **478 puntos de referencia** que mapean:
-        - 👁️ **Ojos**: iris, párpados, cejas
-        - 👃 **Nariz**: puente, fosas, base
-        - 👄 **Boca**: labios, comisuras, dientes
-        - 😊 **Contorno facial**: mandíbula, pómulos
+        * 👁️ **Ojos:** iris, párpados, cejas
+        * 👃 **Nariz:** puente, fosas, base
+        * 👄 **Boca:** labios, comisuras, dientes
+        * 😊 **Contorno facial:** mandíbula, pómulos
         """)
 
-        st.markdown('<hr class="section-separator">', unsafe_allow_html=True)
-
-        st.markdown("### 🚀 Aplicaciones")
+    # Expander para las Aplicaciones
+    with st.expander("🚀 Aplicaciones", expanded=True):
         st.markdown("""
-        - 📸 **Filtros AR**: Instagram, Snapchat
-        - 🎭 **Análisis emocional**: expresiones faciales
-        - 🎬 **Animación**: películas, videojuegos
-        - 🔐 **Biometría**: autenticación facial
-        - 🏥 **Medicina**: análisis anatómico
+        * 📸 **Filtros AR:** Instagram, Snapchat
+        * 🎭 **Análisis emocional:** expresiones faciales
+        * 🎬 **Animación:** películas, videojuegos
+        * 🔐 **Biometría:** autenticación facial
+        * 🏥 **Medicina:** análisis anatómico
         """)
 
-        if modo == "Cámara en tiempo real":
-            st.markdown('<hr class="section-separator">', unsafe_allow_html=True)
-            st.markdown("### 📹 Consejos para la Cámara")
+    if modo == "Cámara en tiempo real":
+        with st.expander("📹 Consejos para la Cámara", expanded=True):
             st.markdown("""
-            ✅ **Iluminación**: buena luz natural
-            🎯 **Posición**: rostro centrado
-            🏃 **Movimiento**: evita sacudidas bruscas
-            👀 **Orientación**: mira de frente a la cámara
-            📏 **Distancia**: 30-50 cm de la lente
+            ✅ **Iluminación:** buena luz natural
+            🎯 **Posición:** rostro centrado
+            🏃 **Movimiento:** evita sacudidas bruscas
+            👀 **Orientación:** mira de frente a la cámara
+            📏 **Distancia:** 30-50 cm de la lente
             """)
 
     st.divider()
