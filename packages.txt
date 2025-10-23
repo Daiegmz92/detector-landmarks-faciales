@@ -1,0 +1,6 @@
+libsm6
+libxext6
+libxrender-dev
+libglib2.0-0
+libgomp1
+libgthread-2.0-0
