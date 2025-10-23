@@ -292,68 +292,45 @@ elif modo == "Cámara en tiempo real":
         else:
             st.info("⚪ Cámara inactiva")
 
-    # Placeholder para el video
-    video_placeholder = st.empty()
+    # Información sobre limitaciones en la nube
+    st.warning("⚠️ **Nota**: El modo de cámara en tiempo real no está disponible en Streamlit Cloud debido a restricciones de seguridad del navegador. Esta funcionalidad solo funciona cuando ejecutás la aplicación localmente.")
 
-    # Estado de la detección
-    if 'detector_activo' not in st.session_state:
-        st.session_state.detector_activo = False
-    if 'detector' not in st.session_state:
-        st.session_state.detector = None
+    # Estado de la detección (deshabilitado para la nube)
+    st.session_state.detector_activo = False
 
-    if iniciar and not st.session_state.detector_activo:
-        st.session_state.detector_activo = True
-        st.session_state.detector = FaceLandmarkDetector()
+    # Mostrar información alternativa
+    st.markdown("""
+    ### 📹 Modo Cámara en Tiempo Real
 
-        # Intentar acceder a la cámara
-        cap = cv2.VideoCapture(0)
+    Esta funcionalidad requiere acceso directo a la cámara de tu dispositivo y solo funciona cuando ejecutás la aplicación localmente.
 
-        if not cap.isOpened():
-            st.error("No se pudo acceder a la cámara. Verificá que esté conectada y no esté siendo usada por otra aplicación.")
-            st.session_state.detector_activo = False
-        else:
-            st.success("Cámara activada. Procesando video en tiempo real...")
+    **Para usar la detección en tiempo real:**
+    1. **Descargá el proyecto** desde GitHub
+    2. **Instalá las dependencias** localmente
+    3. **Ejecutá** `run_app.bat` (Windows) o `python run_app.py` (Linux/Mac)
+    4. **Seleccioná** "Cámara en tiempo real"
+    5. **Permití el acceso** a la cámara cuando el navegador lo solicite
 
-            # Bucle de procesamiento
-            while st.session_state.detector_activo:
-                ret, frame = cap.read()
-                if not ret:
-                    st.error("Error al capturar frame de la cámara")
-                    break
+    **Características del modo local:**
+    - ✅ Detección en tiempo real a 30 FPS
+    - ✅ Procesamiento de video frame por frame
+    - ✅ Controles de inicio/detención
+    - ✅ Visualización de landmarks en vivo
+    """)
 
-                # Redimensionar frame para mejor rendimiento
-                frame = cv2.resize(frame, (640, 480))
-
-                # Procesar frame
-                frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                frame_procesado, landmarks, info = st.session_state.detector.detect(frame_rgb)
-
-                # Convertir a PIL para mostrar en Streamlit
-                frame_pil = cv2_to_pil(frame_procesado)
-
-                # Mostrar frame procesado
-                video_placeholder.image(frame_pil, channels="RGB")
-
-                # Pequeña pausa para no sobrecargar (33ms ≈ 30 FPS)
-                cv2.waitKey(33)
-
-            cap.release()
-
-    if detener and st.session_state.detector_activo:
-        st.session_state.detector_activo = False
-        if st.session_state.detector:
-            st.session_state.detector.close()
-            st.session_state.detector = None
-        st.info("Detección detenida")
-
-    if not st.session_state.detector_activo:
+    # Información técnica
+    with st.expander("🔧 Detalles Técnicos del Modo Cámara"):
         st.markdown("""
-        ### 🚀 ¿Cómo usar la detección en tiempo real?
-        1. **Presioná "Iniciar Detección"** para activar la cámara
-        2. **Permite el acceso** cuando el navegador lo solicite
-        3. **Posicionate frente a la cámara** con buena iluminación
-        4. **Observá los landmarks** en tiempo real
-        5. **Presioná "Detener"** cuando termines
+        **Tecnología utilizada:**
+        - OpenCV para captura de video
+        - MediaPipe para detección de landmarks
+        - Procesamiento en tiempo real
+        - Optimización para 640x480 resolución
+
+        **Limitaciones en la nube:**
+        - Streamlit Cloud no permite acceso directo a hardware
+        - Restricciones de seguridad del navegador
+        - Solo funciona en entornos locales
         """)
 
 else:
