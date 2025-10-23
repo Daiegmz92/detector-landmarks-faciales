@@ -53,6 +53,7 @@ class FaceLandmarkDetector:
             # Tomar el primer rostro
             rostro = resultados.multi_face_landmarks[0]
             info["total_landmarks"] = len(rostro.landmark)
+
             info["deteccion_exitosa"] = True
 
             # Dibujar landmarks

@@ -13,3 +13,5 @@ scipy>=1.10.0
 jax>=0.4.0
 jaxlib>=0.4.0
 mediapipe>=0.10.14
+streamlit-webrtc
+av

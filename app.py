@@ -6,6 +6,9 @@ import streamlit as st
 from PIL import Image
 import cv2
 import numpy as np
+import av
+from streamlit_webrtc import webrtc_streamer, VideoTransformerBase, RTCConfiguration
+import mediapipe as mp
 
 # Lazy imports to avoid initialization issues
 def get_detector():
@@ -19,6 +22,45 @@ def get_utils():
 def get_config():
     from src.config import TOTAL_LANDMARKS
     return TOTAL_LANDMARKS
+
+
+# Configuración de MediaPipe para la detección en tiempo real
+mp_face_mesh = mp.solutions.face_mesh
+mp_drawing = mp.solutions.drawing_utils
+drawing_spec = mp_drawing.DrawingSpec(color=(0, 255, 0), thickness=1, circle_radius=1)  # Puntos verdes
+
+
+class FaceMeshTransformer(VideoTransformerBase):
+    def __init__(self):
+        # Inicializa FaceMesh DENTRO de la clase
+        self.face_mesh = mp_face_mesh.FaceMesh(
+            max_num_faces=1,
+            refine_landmarks=True,
+            min_detection_confidence=0.5,
+            min_tracking_confidence=0.5
+        )
+
+    def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
+        # Convierte el cuadro de video a un array de numpy
+        image = frame.to_ndarray(format="bgr24")
+
+        # Procesa la imagen con MediaPipe
+        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        results = self.face_mesh.process(image_rgb)
+
+        # Dibuja los landmarks si se detecta una cara
+        if results.multi_face_landmarks:
+            for face_landmarks in results.multi_face_landmarks:
+                mp_drawing.draw_landmarks(
+                    image=image,
+                    landmark_list=face_landmarks,
+                    connections=mp_face_mesh.FACEMESH_TESSELATION,
+                    landmark_drawing_spec=drawing_spec,
+                    connection_drawing_spec=drawing_spec
+                )
+
+        # Devuelve el cuadro procesado
+        return av.VideoFrame.from_ndarray(image, format="bgr24")
 
 
 # Configuración de la página
@@ -97,6 +139,12 @@ st.markdown("""
         margin: 10px 0;
         border: 1px solid #444;
         color: #ffffff;
+    }
+
+    /* Título del sidebar más pequeño */
+    .sidebar .sidebar-content h2 {
+        font-size: 1.2rem !important;
+        margin-bottom: 1rem;
     }
 
     /* Separadores sutiles */
@@ -262,9 +310,9 @@ if modo == "Imagen subida":
         st.divider()
 
         if info["deteccion_exitosa"]:
+            # ÉXITO: Mostrar mensaje verde y estadísticas
             st.success("✅ ¡Detección exitosa! Se encontraron landmarks faciales.")
 
-            # Estadísticas mejoradas con contenedores
             st.markdown("### 📊 Estadísticas de Detección")
             col1, col2, col3 = st.columns(3)
 
@@ -286,74 +334,29 @@ if modo == "Imagen subida":
                     except:
                         st.metric("📊 Estado", "Completado")
         else:
-            st.error("No se detectó ningún rostro en la imagen")
-            st.info("""
-            **Consejos**:
-            - Asegurate de que el rostro esté bien iluminado
-            - El rostro debe estar mirando hacia la cámara
-            - Probá con una imagen de mayor calidad
-            """)
+            # ERROR: Mostrar mensaje rojo y sugerencias
+            st.error("❌ No se detectó ningún rostro en la imagen. Por favor, sube una imagen diferente.")
+
+            with st.expander("💡 Sugerencias para mejorar la detección"):
+                st.markdown("""
+                * Asegúrate de que haya un rostro claramente visible en la imagen
+                * El rostro debe estar bien iluminado y mirando hacia la cámara
+                * Evita imágenes borrosas o de baja calidad
+                * Prueba con una imagen más cercana al rostro
+                """)
 
 elif modo == "Cámara en tiempo real":
-    st.markdown("### 📹 Detección en Tiempo Real")
-    st.info("🎥 Esta funcionalidad requiere acceso a la cámara de tu dispositivo para análisis en vivo.")
+    st.header("📹 Detección en Tiempo Real")
+    st.info("Haz clic en 'START'. Tu navegador te pedirá permiso para usar la cámara. Asegúrate de seleccionar la cámara correcta cuando aparezca el selector de dispositivos.")
 
-    # Información sobre limitaciones en la nube
-    st.warning("⚠️ **Nota**: El modo de cámara en tiempo real no está disponible en Streamlit Cloud debido a restricciones de seguridad del navegador. Esta funcionalidad solo funciona cuando ejecutás la aplicación localmente.")
-
-    # Mostrar información alternativa
-    st.markdown("""
-    ### 📹 Modo Cámara en Tiempo Real
-
-    Esta funcionalidad requiere acceso directo a la cámara de tu dispositivo y solo funciona cuando ejecutás la aplicación localmente.
-
-    **Para usar la detección en tiempo real:**
-    1. **Descargá el proyecto** desde GitHub
-    2. **Instalá las dependencias** localmente
-    3. **Ejecutá** `run_app.bat` (Windows) o `python run_app.py` (Linux/Mac)
-    4. **Seleccioná** "Cámara en tiempo real"
-    5. **Permití el acceso** a la cámara cuando el navegador lo solicite
-
-    **Características del modo local:**
-    - ✅ Detección en tiempo real a 30 FPS
-    - ✅ Procesamiento de video frame por frame
-    - ✅ Controles de inicio/detención
-    - ✅ Visualización de landmarks en vivo
-    """)
-
-    # Información técnica mejorada
-    with st.expander("🔧 Detalles Técnicos del Modo Cámara"):
-        col_tech1, col_tech2 = st.columns(2)
-
-        with col_tech1:
-            st.markdown("### 🛠️ Tecnología Utilizada")
-            st.markdown("""
-            - **OpenCV**: Captura y procesamiento de video
-            - **MediaPipe**: Framework de ML de Google
-            - **Streamlit**: Interfaz web en tiempo real
-            - **WebRTC**: Comunicación con cámara web
-            """)
-
-        with col_tech2:
-            st.markdown("### ⚙️ Especificaciones")
-            st.markdown("""
-            - **Resolución**: 640x480 píxeles
-            - **FPS**: 30 frames por segundo
-            - **Landmarks**: 478 puntos faciales
-            - **Procesamiento**: Frame por frame
-            """)
-
-        st.markdown("### 🚫 Limitaciones en Streamlit Cloud")
-        st.markdown("""
-        - ❌ **Acceso a hardware**: No permite cámaras
-        - ❌ **WebRTC**: Bloqueado por seguridad
-        - ❌ **Permisos del navegador**: Restringidos
-        - ✅ **Solución**: Ejecutar localmente
-        """)
-
-    # Placeholder para evitar errores de DOM
-    FRAME_WINDOW = st.empty()
-    FRAME_WINDOW.info("🎥 **Modo no disponible en la nube** - Ejecutá localmente para usar la cámara")
+    webrtc_streamer(
+        key="face_mesh_detector",
+        video_processor_factory=FaceMeshTransformer,
+        media_stream_constraints={"video": True, "audio": False},
+        rtc_configuration=RTCConfiguration(
+            {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
+        )
+    )
 
 else:
     # Mensaje de bienvenida mejorado

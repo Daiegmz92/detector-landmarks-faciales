@@ -8,7 +8,8 @@ FACE_MESH_CONFIG = {
     "static_image_mode": True,
     "max_num_faces": 1,
     "refine_landmarks": True,
-    "min_detection_confidence": 0.5
+    "min_detection_confidence": 0.5,
+    "min_tracking_confidence": 0.5
 }
 
 # Configuración de visualización
