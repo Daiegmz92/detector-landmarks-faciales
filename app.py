@@ -277,26 +277,8 @@ elif modo == "Cámara en tiempo real":
     st.markdown("### 📹 Detección en Tiempo Real")
     st.info("🎥 Esta funcionalidad requiere acceso a la cámara de tu dispositivo para análisis en vivo.")
 
-    # Controles de la cámara mejorados
-    col1, col2, col3 = st.columns([1, 1, 2])
-
-    with col1:
-        iniciar = st.button("▶️ Iniciar Detección", type="primary", help="Comenzar análisis en tiempo real")
-
-    with col2:
-        detener = st.button("⏹️ Detener", help="Detener la detección y liberar la cámara")
-
-    with col3:
-        if st.session_state.get('detector_activo', False):
-            st.success("🔴 **EN VIVO** - Cámara activa")
-        else:
-            st.info("⚪ Cámara inactiva")
-
     # Información sobre limitaciones en la nube
     st.warning("⚠️ **Nota**: El modo de cámara en tiempo real no está disponible en Streamlit Cloud debido a restricciones de seguridad del navegador. Esta funcionalidad solo funciona cuando ejecutás la aplicación localmente.")
-
-    # Estado de la detección (deshabilitado para la nube)
-    st.session_state.detector_activo = False
 
     # Mostrar información alternativa
     st.markdown("""
@@ -332,6 +314,10 @@ elif modo == "Cámara en tiempo real":
         - Restricciones de seguridad del navegador
         - Solo funciona en entornos locales
         """)
+
+    # Placeholder para evitar errores de DOM
+    FRAME_WINDOW = st.empty()
+    FRAME_WINDOW.info("🎥 **Modo no disponible en la nube** - Ejecutá localmente para usar la cámara")
 
 else:
     # Mensaje de bienvenida mejorado
