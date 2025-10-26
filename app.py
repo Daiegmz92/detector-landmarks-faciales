@@ -362,7 +362,7 @@ else:
     # Mensaje de bienvenida mejorado
     st.markdown("""
     <div style='text-align: center; padding: 40px; background: linear-gradient(135deg, #2a2a35 0%, #3a3a45 100%); border-radius: 20px; margin: 20px 0; border: 1px solid #444; color: #ffffff;'>
-        <h3 style='color: #667eea; margin-bottom: 1rem;'>🎯 ¡Bienvenido al Detector de Landmarks Faciales!</h3>
+        <h3 style='color: #667eea; margin-bottom: 1rem;'>🎯 ¡Bienvenido!</h3>
         <p style='font-size: 1.1rem; color: #bcbcbc;'>Seleccioná un modo arriba para comenzar el análisis facial</p>
     </div>
     """, unsafe_allow_html=True)
