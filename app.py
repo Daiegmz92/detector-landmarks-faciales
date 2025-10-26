@@ -200,7 +200,7 @@ st.markdown("""
 
 # Título y descripción con estilo
 st.markdown('<h1 class="main-header">🤖 Detector de Landmarks Faciales</h1>', unsafe_allow_html=True)
-st.markdown('<p class="subtitle">¿Te gustaría ver cómo te "ve" la IA?<br>¿Sabías que la inteligencia artificial puede mapear cientos de puntos en tu rostro?<br>Esta aplicación detecta <strong>478 puntos clave</strong> en rostros humanos usando MediaPipe<br>y descubre la magia de la visión por computadora en acción.</p>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle">¿Te gustaría ver cómo te "ve" la IA?<br>¿Sabías que la inteligencia artificial puede mapear cientos de puntos en tu rostro?<br>Esta aplicación detecta <strong>478 puntos clave</strong> en rostros humanos usando MediaPipe.<br>Descubre la magia de la visión por computadora en acción.</p>', unsafe_allow_html=True)
 
 # Selector de modo (simplificado para evitar errores de DOM)
 modo = st.selectbox(
@@ -246,7 +246,7 @@ with st.sidebar:
     st.divider()
     st.markdown("""
     <div style='text-align: center; color: #bcbcbc; font-size: 0.9rem;'>
-        🏫 <strong>Laboratorio 2</strong><br>
+        🏫 <strong>Proyecto Académico - Laboratorio 2</strong><br>
         Instituto de Formación Técnica Superior N°24<br>
         👨‍🏫 <strong>Profesor:</strong> Matías Barreto<br>
         👩‍💻 <strong class='developer-name'>Desarrolladora:</strong> <span class='developer-name'>Daiana Gómez</span><br>
