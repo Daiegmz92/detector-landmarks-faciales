@@ -200,7 +200,7 @@ st.markdown("""
 
 # Título y descripción con estilo
 st.markdown('<h1 class="main-header">🤖 Detector de Landmarks Faciales</h1>', unsafe_allow_html=True)
-st.markdown('<p class="subtitle">Esta aplicación detecta <strong>478 puntos clave</strong> en rostros humanos usando MediaPipe.<br>Subí una imagen con un rostro y mira la magia de la visión por computadora.</p>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle">¿Te gustaría ver cómo te "ve" la IA?<br>¿Sabías que la inteligencia artificial puede mapear cientos de puntos en tu rostro?<br>Esta aplicación detecta <strong>478 puntos clave</strong> en rostros humanos usando MediaPipe<br>y descubre la magia de la visión por computadora en acción.</p>', unsafe_allow_html=True)
 
 # Selector de modo (simplificado para evitar errores de DOM)
 modo = st.selectbox(
@@ -217,20 +217,20 @@ with st.sidebar:
     with st.expander("🎯 ¿Qué son los Landmarks?", expanded=True):
         st.write("Son **478 puntos de referencia** que mapean:")
         st.markdown("""
-        * 👁️ **Ojos:** iris, párpados, cejas
-        * 👃 **Nariz:** puente, fosas, base
-        * 👄 **Boca:** labios, comisuras, dientes
-        * 😊 **Contorno facial:** mandíbula, pómulos
+        👁️ **Ojos:** iris, párpados, cejas
+        👃 **Nariz:** puente, fosas, base
+        👄 **Boca:** labios, comisuras, dientes
+        😊 **Contorno facial:** mandíbula, pómulos
         """)
 
     # Expander para las Aplicaciones
     with st.expander("🚀 Aplicaciones", expanded=True):
         st.markdown("""
-        * 📸 **Filtros AR:** Instagram, Snapchat
-        * 🎭 **Análisis emocional:** expresiones faciales
-        * 🎬 **Animación:** películas, videojuegos
-        * 🔐 **Biometría:** autenticación facial
-        * 🏥 **Medicina:** análisis anatómico
+        📸 **Filtros AR:** Instagram, Snapchat
+        🎭 **Análisis emocional:** expresiones faciales
+        🎬 **Animación:** películas, videojuegos
+        🔐 **Biometría:** autenticación facial
+        🏥 **Medicina:** análisis anatómico
         """)
 
     if modo == "Cámara en tiempo real":
@@ -339,10 +339,10 @@ if modo == "Imagen subida":
 
             with st.expander("💡 Sugerencias para mejorar la detección"):
                 st.markdown("""
-                * Asegúrate de que haya un rostro claramente visible en la imagen
-                * El rostro debe estar bien iluminado y mirando hacia la cámara
-                * Evita imágenes borrosas o de baja calidad
-                * Prueba con una imagen más cercana al rostro
+                👀 Asegúrate de que haya un rostro claramente visible en la imagen
+                💡 El rostro debe estar bien iluminado y mirando hacia la cámara
+                📸 Evita imágenes borrosas o de baja calidad
+                🔍 Prueba con una imagen más cercana al rostro
                 """)
 
 elif modo == "Cámara en tiempo real":
