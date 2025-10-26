@@ -205,7 +205,7 @@ st.markdown('<p class="subtitle">¿Te gustaría ver cómo te "ve" la IA?<br>¿Sa
 # Selector de modo (simplificado para evitar errores de DOM)
 modo = st.selectbox(
     "Seleccioná el modo de detección:",
-    ["Imagen subida", "Cámara en tiempo real"],
+    ["Subir imagen", "Cámara en tiempo real"],
     help="Elegí entre subir una imagen o usar la cámara en vivo"
 )
 
