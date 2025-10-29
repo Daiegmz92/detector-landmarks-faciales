@@ -254,7 +254,7 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
-if modo == "Imagen subida":
+if modo == "Subir imagen":
     # Uploader de imagen con control de errores
     uploaded_file = st.file_uploader(
         "Subí una imagen con un rostro",
